@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Report</title>
+    <link rel="stylesheet" href="pro1.css">
+</head>
+<body>
+    <div class="weather-container">
+        <h1>Weather Report</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Enter city name">
+            <button onclick="searchWeather()">Search</button>
+        </div>
+        <div class="weather-info">
+            <div class="location">City: <span id="city">-</span></div>
+            <div class="temperature">Temperature: <span id="temperature">-</span></div>
+            <div class="description">Description: <span id="description">-</span></div>
+        </div>
+    </div>
+    <script>
+        async function searchWeather() {
+            const searchInput = document.getElementById('searchInput').value;
+            const apiKey = 'aa4cc652db032c1bb08ab79ca291bc17';
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                document.getElementById('city').textContent = data.name || '-';
+                document.getElementById('temperature').textContent = data.main && data.main.temp ? data.main.temp + '°C' : '-';
+                document.getElementById('description').textContent = data.weather && data.weather[0] && data.weather[0].description ? data.weather[0].description : '-';
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                alert('Error fetching weather data. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
